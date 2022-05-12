@@ -1,0 +1,185 @@
+﻿@using Entidades
+@using Domain.Entidades_Negocio
+@model Entidades.Alumno
+
+@{
+    ViewBag.Title = "Details";
+    List<Estado> _lestado = new List<Estado>();
+    NEstado _nestado = new NEstado();
+    List<EstatusAlumnos> _lestatus = new List<EstatusAlumnos>();
+    NEstatus _nestatus = new NEstatus();
+    NItemISR _nItem = new NItemISR();
+    ItemISR _item = new ItemISR();
+    NIMSS _nImss = new NIMSS();
+    IMSS _imss = new IMSS();
+
+}
+
+<h2>Detalles del Alumno</h2>
+
+<dl class="dl-horizontal">
+    <dt>
+        ID
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.ID)
+    </dd>
+    <dt>
+        Nombre
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.Nombre)
+    </dd>
+    <dt>
+        Primer Apellido
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.PrimerApellido)
+    </dd>
+    <dt>
+        Segundo Apellido
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.SegundoApellido)
+    </dd>
+    <dt>
+        Fecha de Nacimiento
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.FechaNacimiento)
+    </dd>
+    <dt>
+        CURP
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.CURP)
+    </dd>
+    <dt>
+        Correo
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.Correo)
+    </dd>
+    <dt>
+        Telefono
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.Telefono)
+    </dd>
+    <dt>
+        Sueldo Mensual
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.SueldoMensual)
+    </dd>
+    <dt>
+        Estado
+    </dt>
+    <dd>
+        @{
+            _lestado = _nestado.Consultar();
+            var resultado = from estado in _lestado
+                            where estado.ID == Model.IdEstadoOrig
+                            select new
+                            {
+                                Nombre = estado.Nombre
+                            };
+            foreach (var estado in resultado)
+            {
+                var es = estado.Nombre.ToString();
+                @es
+            }
+
+        }
+    </dd>
+    <dt>
+        Estatus
+    </dt>
+    <dd>
+        @{
+            _lestatus = _nestatus.Consultar();
+            var rEstatus = from estatus in _lestatus
+                           where estatus.ID == Model.IdEstatus
+                           select new
+                           {
+                               Nombre = estatus.Nombre
+                           };
+
+            foreach (var estatus in rEstatus)
+            {
+                var est = estatus.Nombre.ToString();
+                @est
+            }
+        }
+    </dd>
+</dl>
+<div>
+    <div>
+        <a class="btn btn-default" href="~/Alumnos/CalcularISR/@Model.ID">Calcular ISR</a>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+            Calcular IMSS
+        </button>
+    </div>
+</div>
+<div class="form-group">
+    <div class="col-md-2">
+        <a href="~/Alumnos/Index">Regresar a la Lista</a>
+    </div>
+</div>
+@{
+    _item = _nItem.CalcularISR(Model.ID);
+    _imss = _nImss.Calcular(Model.SueldoMensual);
+}
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Calculo del IMSS</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <dl>
+                    <dt>
+                        Enfermedades y Maternidad
+                    </dt>
+                    <dd>
+                        <p>$@_imss.EnfyMat</p>
+                    </dd>
+                    <dt>
+                        Invalidez y Vida
+                    </dt>
+                    <dd>
+                        <p>$@_imss.InvyVid</p>
+                    </dd>
+                    <dt>
+                        Retiro
+                    </dt>
+                    <dd>
+                        <p>$@_imss.Retiro</p>
+                    </dd>
+                    <dt>
+                        Cesantia
+                    </dt>
+                    <dd>
+                        <p>$@_imss.Cesantia</p>
+                    </dd>
+                    <dt>
+                        Infonavit
+                    </dt>
+                    <dd>
+                        <p>$@_imss.CreditoInf</p>
+                    </dd>
+                </dl>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

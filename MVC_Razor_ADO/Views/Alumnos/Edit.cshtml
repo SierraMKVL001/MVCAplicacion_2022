@@ -1,0 +1,197 @@
+﻿@using Entidades
+@model Alumno
+@{
+    ViewBag.Title = "Editar";
+}
+
+<h2>Editar Alumno</h2>
+@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.ID)
+            </div>
+            <div class="col-md-10">
+                @Html.DisplayFor(m => m.ID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Nombre)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Nombre)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.PrimerApellido)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.PrimerApellido)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.SegundoApellido)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.SegundoApellido)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.FechaNacimiento)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.FechaNacimiento, "", new { @type = "date" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.CURP)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.CURP)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Correo)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Correo)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Telefono)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Telefono)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.SueldoMensual)
+            </div>
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.SueldoMensual)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.IdEstadoOrig)
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownList("idEstado", new SelectList(ViewBag.estados, "id", "nombre"), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.IdEstatus)
+            </div>
+            <div class="col-md-10">
+                @Html.DropDownList("idEstatus", new SelectList(ViewBag.estatus, "id", "nombre"), htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+}
+@*@using (Html.BeginForm())
+{
+    <div class="form-horizontal">
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.ID)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.ID)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Nombre)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Nombre)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.PrimerApellido)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.PrimerApellido)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.SegundoApellido)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.SegundoApellido)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.FechaNacimiento)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.FechaNacimiento)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.CURP)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.CURP)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Correo)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Correo)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.Telefono)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.Telefono)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.SueldoMensual)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.SueldoMensual)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.IdEstadoOrig)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.IdEstadoOrig)
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-2">
+                @Html.LabelFor(m => m.IdEstatus)
+            </div>
+            <div class="col-md-10">
+                @Html.EditorFor(m => m.IdEstatus)
+            </div>
+        </div>
+    </div>*@
+@*}*@
+<a class="btn btn-default" href="~/Alumnos/EditarAlumno/@Model">Detalles</a>
+

@@ -1,0 +1,350 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="InstitutoTichModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Alumnos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="60" Nullable="false" />
+          <Property Name="primerApellido" Type="varchar" MaxLength="50" />
+          <Property Name="segundoApellido" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="correo" Type="varchar" MaxLength="80" Nullable="false" />
+          <Property Name="telefono" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="fechaNacimiento" Type="date" Nullable="false" />
+          <Property Name="curp" Type="char" MaxLength="18" Nullable="false" />
+          <Property Name="sueldoMensual" Type="decimal" Precision="9" Scale="2" />
+          <Property Name="idEstadoOrigen" Type="int" Nullable="false" />
+          <Property Name="idEstatus" Type="smallint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Estados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="100" />
+          <Property Name="curp" Type="char" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="EstatusAlumnos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="smallint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Clave" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TablaISR">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LimInf" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="LimSup" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="CuotaFija" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="ExedLimInf" Type="decimal" Precision="19" Scale="2" />
+          <Property Name="Subsidio" Type="decimal" Precision="9" Scale="2" />
+        </EntityType>
+        <Association Name="FK__Alumnos__idEstad__22751F6C">
+          <End Role="Estados" Type="Self.Estados" Multiplicity="1" />
+          <End Role="Alumnos" Type="Self.Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Alumnos">
+              <PropertyRef Name="idEstadoOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Alumnos__idEstat__236943A5">
+          <End Role="EstatusAlumnos" Type="Self.EstatusAlumnos" Multiplicity="1" />
+          <End Role="Alumnos" Type="Self.Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstatusAlumnos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Alumnos">
+              <PropertyRef Name="idEstatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="actualizarAlumnos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDed" Type="int" Mode="In" />
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="primer" Type="varchar" Mode="In" />
+          <Parameter Name="segundo" Type="varchar" Mode="In" />
+          <Parameter Name="corr" Type="varchar" Mode="In" />
+          <Parameter Name="tel" Type="nchar" Mode="In" />
+          <Parameter Name="fNac" Type="date" Mode="In" />
+          <Parameter Name="curp" Type="char" Mode="In" />
+          <Parameter Name="sMen" Type="decimal" Mode="In" />
+          <Parameter Name="idEO" Type="int" Mode="In" />
+          <Parameter Name="idES" Type="int" Mode="In" />
+        </Function>
+        <Function Name="agregarAlumnos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar" Mode="In" />
+          <Parameter Name="primer" Type="varchar" Mode="In" />
+          <Parameter Name="segundo" Type="varchar" Mode="In" />
+          <Parameter Name="corr" Type="varchar" Mode="In" />
+          <Parameter Name="tel" Type="nchar" Mode="In" />
+          <Parameter Name="fNac" Type="date" Mode="In" />
+          <Parameter Name="curp" Type="char" Mode="In" />
+          <Parameter Name="sMen" Type="decimal" Mode="In" />
+          <Parameter Name="idEO" Type="int" Mode="In" />
+          <Parameter Name="idES" Type="int" Mode="In" />
+        </Function>
+        <Function Name="consultasAlumnos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idAlum" Type="int" Mode="In" />
+        </Function>
+        <Function Name="eliminarAlumnos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idAl" Type="int" Mode="In" />
+        </Function>
+        <EntityContainer Name="InstitutoTichModelStoreContainer">
+          <EntitySet Name="Alumnos" EntityType="Self.Alumnos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Estados" EntityType="Self.Estados" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EstatusAlumnos" EntityType="Self.EstatusAlumnos" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TablaISR" EntityType="Self.TablaISR" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Alumnos__idEstad__22751F6C" Association="Self.FK__Alumnos__idEstad__22751F6C">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="Alumnos" EntitySet="Alumnos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Alumnos__idEstat__236943A5" Association="Self.FK__Alumnos__idEstat__236943A5">
+            <End Role="EstatusAlumnos" EntitySet="EstatusAlumnos" />
+            <End Role="Alumnos" EntitySet="Alumnos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="InstitutoTichModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Alumnos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="60" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="primerApellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="segundoApellido" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correo" Type="String" MaxLength="80" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="fechaNacimiento" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="curp" Type="String" MaxLength="18" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="sueldoMensual" Type="Decimal" Precision="9" Scale="2" />
+          <Property Name="idEstadoOrigen" Type="Int32" Nullable="false" />
+          <Property Name="idEstatus" Type="Int16" Nullable="false" />
+          <NavigationProperty Name="Estados" Relationship="Self.FK__Alumnos__idEstad__22751F6C" FromRole="Alumnos" ToRole="Estados" />
+          <NavigationProperty Name="EstatusAlumnos" Relationship="Self.FK__Alumnos__idEstat__236943A5" FromRole="Alumnos" ToRole="EstatusAlumnos" />
+        </EntityType>
+        <EntityType Name="Estados">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="curp" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Alumnos" Relationship="Self.FK__Alumnos__idEstad__22751F6C" FromRole="Estados" ToRole="Alumnos" />
+        </EntityType>
+        <EntityType Name="EstatusAlumnos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int16" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Clave" Type="String" MaxLength="10" FixedLength="true" Unicode="false" Nullable="false" />
+          <Property Name="Nombre" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Alumnos" Relationship="Self.FK__Alumnos__idEstat__236943A5" FromRole="EstatusAlumnos" ToRole="Alumnos" />
+        </EntityType>
+        <EntityType Name="TablaISR">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LimInf" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="LimSup" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="CuotaFija" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="ExedLimInf" Type="Decimal" Precision="19" Scale="2" />
+          <Property Name="Subsidio" Type="Decimal" Precision="9" Scale="2" />
+        </EntityType>
+        <Association Name="FK__Alumnos__idEstad__22751F6C">
+          <End Role="Estados" Type="Self.Estados" Multiplicity="1" />
+          <End Role="Alumnos" Type="Self.Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Estados">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Alumnos">
+              <PropertyRef Name="idEstadoOrigen" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Alumnos__idEstat__236943A5">
+          <End Role="EstatusAlumnos" Type="Self.EstatusAlumnos" Multiplicity="1" />
+          <End Role="Alumnos" Type="Self.Alumnos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EstatusAlumnos">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Alumnos">
+              <PropertyRef Name="idEstatus" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="InstitutoTichEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Alumnos" EntityType="Self.Alumnos" />
+          <EntitySet Name="Estados" EntityType="Self.Estados" />
+          <EntitySet Name="EstatusAlumnos" EntityType="Self.EstatusAlumnos" />
+          <EntitySet Name="TablaISR" EntityType="Self.TablaISR" />
+          <AssociationSet Name="FK__Alumnos__idEstad__22751F6C" Association="Self.FK__Alumnos__idEstad__22751F6C">
+            <End Role="Estados" EntitySet="Estados" />
+            <End Role="Alumnos" EntitySet="Alumnos" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Alumnos__idEstat__236943A5" Association="Self.FK__Alumnos__idEstat__236943A5">
+            <End Role="EstatusAlumnos" EntitySet="EstatusAlumnos" />
+            <End Role="Alumnos" EntitySet="Alumnos" />
+          </AssociationSet>
+          <FunctionImport Name="actualizarAlumnos">
+            <Parameter Name="IDed" Mode="In" Type="Int32" />
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="primer" Mode="In" Type="String" />
+            <Parameter Name="segundo" Mode="In" Type="String" />
+            <Parameter Name="corr" Mode="In" Type="String" />
+            <Parameter Name="tel" Mode="In" Type="String" />
+            <Parameter Name="fNac" Mode="In" Type="DateTime" />
+            <Parameter Name="curp" Mode="In" Type="String" />
+            <Parameter Name="sMen" Mode="In" Type="Decimal" />
+            <Parameter Name="idEO" Mode="In" Type="Int32" />
+            <Parameter Name="idES" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="agregarAlumnos">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="primer" Mode="In" Type="String" />
+            <Parameter Name="segundo" Mode="In" Type="String" />
+            <Parameter Name="corr" Mode="In" Type="String" />
+            <Parameter Name="tel" Mode="In" Type="String" />
+            <Parameter Name="fNac" Mode="In" Type="DateTime" />
+            <Parameter Name="curp" Mode="In" Type="String" />
+            <Parameter Name="sMen" Mode="In" Type="Decimal" />
+            <Parameter Name="idEO" Mode="In" Type="Int32" />
+            <Parameter Name="idES" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="consultasAlumnos" ReturnType="Collection(InstitutoTichModel.consultasAlumnos_Result)">
+            <Parameter Name="idAlum" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="eliminarAlumnos">
+            <Parameter Name="idAl" Mode="In" Type="Int32" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="consultasAlumnos_Result">
+          <Property Type="Int32" Name="id" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="60" />
+          <Property Type="String" Name="primerApellido" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="segundoApellido" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="correo" Nullable="false" MaxLength="80" />
+          <Property Type="String" Name="telefono" Nullable="false" MaxLength="10" />
+          <Property Type="DateTime" Name="fechaNacimiento" Nullable="false" />
+          <Property Type="String" Name="curp" Nullable="false" MaxLength="18" />
+          <Property Type="Decimal" Name="sueldoMensual" Nullable="true" Precision="9" Scale="2" />
+          <Property Type="Int32" Name="idEstadoOrigen" Nullable="false" />
+          <Property Type="Int16" Name="idEstatus" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="InstitutoTichModelStoreContainer" CdmEntityContainer="InstitutoTichEntities">
+          <EntitySetMapping Name="Alumnos">
+            <EntityTypeMapping TypeName="InstitutoTichModel.Alumnos">
+              <MappingFragment StoreEntitySet="Alumnos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="primerApellido" ColumnName="primerApellido" />
+                <ScalarProperty Name="segundoApellido" ColumnName="segundoApellido" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="fechaNacimiento" ColumnName="fechaNacimiento" />
+                <ScalarProperty Name="curp" ColumnName="curp" />
+                <ScalarProperty Name="sueldoMensual" ColumnName="sueldoMensual" />
+                <ScalarProperty Name="idEstadoOrigen" ColumnName="idEstadoOrigen" />
+                <ScalarProperty Name="idEstatus" ColumnName="idEstatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Estados">
+            <EntityTypeMapping TypeName="InstitutoTichModel.Estados">
+              <MappingFragment StoreEntitySet="Estados">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="curp" ColumnName="curp" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EstatusAlumnos">
+            <EntityTypeMapping TypeName="InstitutoTichModel.EstatusAlumnos">
+              <MappingFragment StoreEntitySet="EstatusAlumnos">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Clave" ColumnName="Clave" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TablaISR">
+            <EntityTypeMapping TypeName="InstitutoTichModel.TablaISR">
+              <MappingFragment StoreEntitySet="TablaISR">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="LimInf" ColumnName="LimInf" />
+                <ScalarProperty Name="LimSup" ColumnName="LimSup" />
+                <ScalarProperty Name="CuotaFija" ColumnName="CuotaFija" />
+                <ScalarProperty Name="ExedLimInf" ColumnName="ExedLimInf" />
+                <ScalarProperty Name="Subsidio" ColumnName="Subsidio" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="actualizarAlumnos" FunctionName="InstitutoTichModel.Store.actualizarAlumnos" />
+          <FunctionImportMapping FunctionImportName="agregarAlumnos" FunctionName="InstitutoTichModel.Store.agregarAlumnos" />
+          <FunctionImportMapping FunctionImportName="consultasAlumnos" FunctionName="InstitutoTichModel.Store.consultasAlumnos">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="InstitutoTichModel.consultasAlumnos_Result">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="primerApellido" ColumnName="primerApellido" />
+                <ScalarProperty Name="segundoApellido" ColumnName="segundoApellido" />
+                <ScalarProperty Name="correo" ColumnName="correo" />
+                <ScalarProperty Name="telefono" ColumnName="telefono" />
+                <ScalarProperty Name="fechaNacimiento" ColumnName="fechaNacimiento" />
+                <ScalarProperty Name="curp" ColumnName="curp" />
+                <ScalarProperty Name="sueldoMensual" ColumnName="sueldoMensual" />
+                <ScalarProperty Name="idEstadoOrigen" ColumnName="idEstadoOrigen" />
+                <ScalarProperty Name="idEstatus" ColumnName="idEstatus" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="eliminarAlumnos" FunctionName="InstitutoTichModel.Store.eliminarAlumnos" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

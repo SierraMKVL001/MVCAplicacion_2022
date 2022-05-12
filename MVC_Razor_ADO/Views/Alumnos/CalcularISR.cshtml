@@ -1,0 +1,48 @@
+﻿@model Entidades.ItemISR
+
+<div class="modal" id="IMSSModClient"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLabel">Calculo del ISR</h3>
+            </div>
+            <dl>
+                <dt>
+                    Limite Inferior
+                </dt>
+                <dd>
+                    @Html.DisplayFor(m => m.LimInf)
+                </dd>
+                <dt>
+                    Limite Inferior
+                </dt>
+                <dd>
+                    @Html.DisplayFor(m => m.LimSup)
+                </dd>
+                <dt>
+                    Cuota Fija
+                </dt>
+                <dd>
+                    @Html.DisplayFor(m => m.CuotaFija)
+                </dd>
+                <dt>
+                    Porcentaje de Excedente
+                </dt>
+                <dd>
+                    @Html.DisplayFor(m => m.PorExced)
+                </dd>
+                <dt>
+                    Subcidio
+                </dt>
+                <dd>
+                    @Html.DisplayFor(m => m.Subcidio)
+                </dd>
+            </dl>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+        </div>
+    </div>
+</div>
+

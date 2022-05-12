@@ -1,0 +1,108 @@
+﻿@using Entidades
+@using Domain.Logica_Negocio
+@model Entidades.Alumnos
+@{
+    ViewBag.Title = "Details";
+    List<Estados> _lestado = new List<Estados>();
+    NEstados _nestado = new NEstados();
+    List<EstatusAlumnos> _lestatus = new List<EstatusAlumnos>();
+    NEstatusAlumnos _nestatus = new NEstatusAlumnos();
+}
+
+<h2>Details</h2>
+<dl class="dl-horizontal">
+    <dt>
+        ID
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.id)
+    </dd>
+    <dt>
+        Nombre
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.nombre)
+    </dd>
+    <dt>
+        Primer Apellido
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.primerApellido)
+    </dd>
+    <dt>
+        Segundo Apellido
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.segundoApellido)
+    </dd>
+    <dt>
+        Fecha de Nacimiento
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.fechaNacimiento)
+    </dd>
+    <dt>
+        CURP
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.curp)
+    </dd>
+    <dt>
+        Correo
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.correo)
+    </dd>
+    <dt>
+        Telefono
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.telefono)
+    </dd>
+    <dt>
+        Sueldo Mensual
+    </dt>
+    <dd>
+        @Html.DisplayFor(m => m.sueldoMensual)
+    </dd>
+    <dt>
+        Estado
+    </dt>
+    <dd>
+        @{
+            _lestado = _nestado.Consultar();
+            var resultado = from estado in _lestado
+                            where estado.id == Model.idEstadoOrigen
+                            select new
+                            {
+                                Nombre = estado.nombre
+                            };
+            foreach (var estado in resultado)
+            {
+                var es = estado.Nombre.ToString();
+                @es
+            }
+
+        }
+    </dd>
+    <dt>
+        Estatus
+    </dt>
+    <dd>
+        @{
+            _lestatus = _nestatus.Consultar();
+            var rEstatus = from estatus in _lestatus
+                           where estatus.id == Model.idEstatus
+                           select new
+                           {
+                               Nombre = estatus.Nombre
+                           };
+
+            foreach (var estatus in rEstatus)
+            {
+                var est = estatus.Nombre.ToString();
+                @est
+            }
+        }
+    </dd>
+</dl>
