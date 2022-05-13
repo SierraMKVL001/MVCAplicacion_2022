@@ -39,15 +39,39 @@ namespace Presentation.Controllers
 
         // POST: Alumnos/Create
         [HttpPost]
-        public ActionResult Create(Alumnos alum)
+        public ActionResult Create(Models.ViewModels.AlumnoViewModel alum)
         {
             try
             {
-                _nAlumno.Agregar(alum);
-                return RedirectToAction("Index");
+                Alumnos _Alumno = new Alumnos();
+                if (ModelState.IsValid)
+                {
+                    _Alumno.id = alum.id;
+                    _Alumno.nombre = alum.nombre;
+                    _Alumno.primerApellido = alum.primerApellido;
+                    _Alumno.segundoApellido = alum.segundoApellido;
+                    _Alumno.curp = alum.curp;
+                    _Alumno.fechaNacimiento = alum.fechaNacimiento;
+                    _Alumno.correo = alum.correo;
+                    _Alumno.telefono = alum.telefono;
+                    _Alumno.sueldoMensual = alum.sueldoMensual;
+                    _Alumno.idEstadoOrigen = alum.idEstadoOrigen;
+                    _Alumno.idEstatus = alum.idEstatus;
+                    _nAlumno.Agregar(_Alumno);
+                    return RedirectToAction("Index");
+                }
+                List<Estados> lstEstados = _nestados.Consultar();
+                ViewBag.estados = lstEstados;
+                List<EstatusAlumnos> lstEstatus = _nestatusAlumnos.Consultar();
+                ViewBag.estatus = lstEstatus;
+                return View();
             }
             catch
             {
+                List<Estados> lstEstados = _nestados.Consultar();
+                ViewBag.estados = lstEstados;
+                List<EstatusAlumnos> lstEstatus = _nestatusAlumnos.Consultar();
+                ViewBag.estatus = lstEstatus;
                 return View();
             }
         }
@@ -65,13 +89,35 @@ namespace Presentation.Controllers
 
         // POST: Alumnos/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, Alumnos alum)
+        public ActionResult Edit(int id, Models.ViewModels.AlumnoViewModel alum)
         {
             try
             {
+                Alumnos _Alumno = new Alumnos();
+                if (ModelState.IsValid)
+                {
+                    _Alumno.id = alum.id;
+                    _Alumno.nombre = alum.nombre;
+                    _Alumno.primerApellido = alum.primerApellido;
+                    _Alumno.segundoApellido = alum.segundoApellido;
+                    _Alumno.curp = alum.curp;
+                    _Alumno.fechaNacimiento = alum.fechaNacimiento;
+                    _Alumno.correo = alum.correo;
+                    _Alumno.telefono = alum.telefono;
+                    _Alumno.sueldoMensual = alum.sueldoMensual;
+                    _Alumno.idEstadoOrigen = alum.idEstadoOrigen;
+                    _Alumno.idEstatus = alum.idEstatus;
+                    _nAlumno.Actualizar(_Alumno);
+                    return RedirectToAction("Index");
+                }
+                Alumnos alumn = _nAlumno.Consultar(id);
+                List<Estados> lstEstados = _nestados.Consultar();
+                ViewBag.estados = lstEstados;
+                List<EstatusAlumnos> lstEstatus = _nestatusAlumnos.Consultar();
+                ViewBag.estatus = lstEstatus;
+                return View(alumn);
                 // TODO: Add update logic here
-                _nAlumno.Actualizar(alum);
-                return RedirectToAction("Index");
+
             }
             catch
             {
@@ -98,8 +144,23 @@ namespace Presentation.Controllers
             }
             catch
             {
-                return View();
+                Alumnos alumn = _nAlumno.Consultar(id);
+                List<Estados> lstEstados = _nestados.Consultar();
+                ViewBag.estados = lstEstados;
+                List<EstatusAlumnos> lstEstatus = _nestatusAlumnos.Consultar();
+                ViewBag.estatus = lstEstatus;
+                return View(alumn);
             }
+        }
+        public ActionResult _AportacionesIMSS(int id)
+        {
+            AportacionesIMSS _IMSS=_nAlumno.CalcularIMSS(id);
+            return PartialView(_IMSS);
+        }
+        public ActionResult _TablaISR(int id)
+        {
+            ItemISR _item = _nAlumno.CalcularISR(id);
+            return PartialView(_item);
         }
     }
 }

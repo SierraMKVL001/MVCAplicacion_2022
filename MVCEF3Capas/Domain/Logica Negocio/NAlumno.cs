@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Entidades;
 using DataAccess;
 using System.Data.Entity;
+using Newtonsoft.Json;
 
 namespace Domain.Logica_Negocio
 {
@@ -38,6 +39,24 @@ namespace Domain.Logica_Negocio
         {
             _DBContext.Entry(alum).State = EntityState.Modified;
             _DBContext.SaveChanges();
+        }
+        public ItemISR CalcularISR(int id)
+        {
+            ItemISR _IISR =new ItemISR();
+            WCFAlumno.WCFAlumnosClient cliente=new WCFAlumno.WCFAlumnosClient();
+            WCFAlumno.ItemTablaISR ISR = cliente.CalcularISR(id);
+            var json = JsonConvert.SerializeObject(ISR);
+            _IISR = JsonConvert.DeserializeObject<ItemISR>(json);
+            return _IISR;
+        }
+        public AportacionesIMSS CalcularIMSS(int id)
+        {
+            AportacionesIMSS _AIMSS = new AportacionesIMSS();
+            WCFAlumno.WCFAlumnosClient client=new WCFAlumno.WCFAlumnosClient();
+            WCFAlumno.AportacionesIMSS _WCFIMSS=client.CalcularIMSS(id);
+            var json = JsonConvert.SerializeObject(_WCFIMSS);
+            _AIMSS = JsonConvert.DeserializeObject<AportacionesIMSS>(json);
+            return _AIMSS;
         }
     }
 }

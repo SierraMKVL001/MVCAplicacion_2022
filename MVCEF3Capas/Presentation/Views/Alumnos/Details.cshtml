@@ -1,108 +1,280 @@
 ﻿@using Entidades
 @using Domain.Logica_Negocio
 @model Entidades.Alumnos
+
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Detalles del Alumno";
     List<Estados> _lestado = new List<Estados>();
     NEstados _nestado = new NEstados();
     List<EstatusAlumnos> _lestatus = new List<EstatusAlumnos>();
     NEstatusAlumnos _nestatus = new NEstatusAlumnos();
 }
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            ID
+        </dt>
+        <dd>
+            <span id="Id">@Html.DisplayFor(m => m.id)</span>
 
-<h2>Details</h2>
-<dl class="dl-horizontal">
-    <dt>
-        ID
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.id)
-    </dd>
-    <dt>
-        Nombre
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.nombre)
-    </dd>
-    <dt>
-        Primer Apellido
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.primerApellido)
-    </dd>
-    <dt>
-        Segundo Apellido
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.segundoApellido)
-    </dd>
-    <dt>
-        Fecha de Nacimiento
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.fechaNacimiento)
-    </dd>
-    <dt>
-        CURP
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.curp)
-    </dd>
-    <dt>
-        Correo
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.correo)
-    </dd>
-    <dt>
-        Telefono
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.telefono)
-    </dd>
-    <dt>
-        Sueldo Mensual
-    </dt>
-    <dd>
-        @Html.DisplayFor(m => m.sueldoMensual)
-    </dd>
-    <dt>
-        Estado
-    </dt>
-    <dd>
-        @{
-            _lestado = _nestado.Consultar();
-            var resultado = from estado in _lestado
-                            where estado.id == Model.idEstadoOrigen
-                            select new
-                            {
-                                Nombre = estado.nombre
-                            };
-            foreach (var estado in resultado)
-            {
-                var es = estado.Nombre.ToString();
-                @es
+        </dd>
+        <dt>
+            Nombre
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.nombre)
+        </dd>
+        <dt>
+            Primer Apellido
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.primerApellido)
+        </dd>
+        <dt>
+            Segundo Apellido
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.segundoApellido)
+        </dd>
+        <dt>
+            Fecha de Nacimiento
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.fechaNacimiento)
+        </dd>
+        <dt>
+            CURP
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.curp)
+        </dd>
+        <dt>
+            Correo
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.correo)
+        </dd>
+        <dt>
+            Telefono
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.telefono)
+        </dd>
+        <dt>
+            Sueldo Mensual
+        </dt>
+        <dd>
+            @Html.DisplayFor(m => m.sueldoMensual)
+        </dd>
+        <dt>
+            Estado
+        </dt>
+        <dd>
+            @{
+                _lestado = _nestado.Consultar();
+                var resultado = from estado in _lestado
+                                where estado.id == Model.idEstadoOrigen
+                                select new
+                                {
+                                    Nombre = estado.nombre
+                                };
+                foreach (var estado in resultado)
+                {
+                    var es = estado.Nombre.ToString();
+                    @es
+                }
+
             }
+        </dd>
+        <dt>
+            Estatus
+        </dt>
+        <dd>
+            @{
+                _lestatus = _nestatus.Consultar();
+                var rEstatus = from estatus in _lestatus
+                               where estatus.id == Model.idEstatus
+                               select new
+                               {
+                                   Nombre = estatus.Nombre
+                               };
 
+                foreach (var estatus in rEstatus)
+                {
+                    var est = estatus.Nombre.ToString();
+                    @est
+                }
+            }
+        </dd>
+    </dl>
+    <div>
+        <div>
+            <input id="iModal" type="button" onclick="CalcularIMSS()" value="CalcularIMSS" class="btn btn-primary" />
+            <input id="iModalISR" type="button" onclick="CalcularISR()" value="CalcularISR" class="btn btn-primary" />
+        </div>
+    </div>
+
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            @Html.ActionLink("Regresar a la Lista", "Index")
+        </div>
+    }
+</div>
+<div class="modal" id="IMSSModClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Encabezado Modal -->
+            <div class="modal-header">
+                <h4 class="modal-title">Calculo del IMSS</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Curepo de la Modal -->
+            <div class="modal-body" id="modalBody">
+
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@*<script type="text/javascript">
+        function CalcularIMSS() {
+            var id = $("#Id").text();
+            var urlWS = "/Alumnos/_AportacionesIMSS/"+id;
+            LlamaAjaxGet(urlWS, MuestraAportacionesIMSS);
         }
-    </dd>
-    <dt>
-        Estatus
-    </dt>
-    <dd>
-        @{
-            _lestatus = _nestatus.Consultar();
-            var rEstatus = from estatus in _lestatus
-                           where estatus.id == Model.idEstatus
-                           select new
-                           {
-                               Nombre = estatus.Nombre
-                           };
+        function LlamaAjaxGet(url, funcionExito) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: {},
+                contentType: "application/json; charset = utf - 8",
+                dataType: "html",
+                success: funcionExito,
+                error: errorGenerico
+            });
+        }
 
-            foreach (var estatus in rEstatus)
-            {
-                var est = estatus.Nombre.ToString();
-                @est
+        function MuestraAportacionesIMSS(data) {
+            try {
+                if (data != null) {
+                    $("#modalBody").html(data);
+                    $("#IMSSModClient").modal();
+                } else {
+                    alert('La pagina Web no puede responder a tu peticion')
+                }
+            } catch (ex) {
+                alumno = [];
+                alert('No se pudo guardar los datos');
             }
         }
-    </dd>
-</dl>
+        function funcExito(resultado, estatus, jqXHR) {
+            var oRespuesta;
+            try {
+                oRespuesta = JSON.parse(resultado.d);
+                if (oRespuesta != null) {
+                    if (oRespuesta.Mensaje == "Exito") {
+                        alert('Transacción efectuada con éxito');
+                        /*window.location.href = "Default.aspx";*/
+                    }
+                    else {
+                        alert(oRespuesta.Mensaje);
+                    }
+                }
+                else {
+                    alert('La respuesta recibida del Web Service es incorrecta ' + resultado.d);
+                }
+            }
+            catch (ex) {
+                alert('Error al recibir los datos');
+            }
+        }
+
+        function CalcularISR() {
+            var id = $("#Id").text();
+            var urlWS = "/Alumnos/_TablaISR/"+id;
+            LlamaAjaxGet(urlWS, MuestraTablaISR);
+        }
+        function LlamaAjaxGet(url, funcionExito) {
+            $.ajax({
+                type: 'GET',
+                url: url,
+                data: {},
+                contentType: "application/json; charset = utf - 8",
+                dataType: "html",
+                success: funcionExito,
+                error: errorGenerico
+            });
+        }
+
+        function MuestraTablaISR(data) {
+            try {
+                if (data != null) {
+                    $("#modalBody").html(data);
+                    $("#IMSSModClient").modal();
+                } else {
+                    alert('La pagina Web no puede responder a tu peticion')
+                }
+            } catch (ex) {
+                alumno = [];
+                alert('No se pudo guardar los datos');
+            }
+        }
+        function funcExito(resultado, estatus, jqXHR) {
+            var oRespuesta;
+            try {
+                oRespuesta = JSON.parse(resultado.d);
+                if (oRespuesta != null) {
+                    if (oRespuesta.Mensaje == "Exito") {
+                        alert('Transacción efectuada con éxito');
+                        /*window.location.href = "Default.aspx";*/
+                    }
+                    else {
+                        alert(oRespuesta.Mensaje);
+                    }
+                }
+                else {
+                    alert('La respuesta recibida del Web Service es incorrecta ' + resultado.d);
+                }
+            }
+            catch (ex) {
+                alert('Error al recibir los datos');
+            }
+        }
+
+        function errorGenerico(jqXHR, estatus, error) {
+            var msg = '';
+            if (jqXHR.status === 0) {
+                msg = 'No está conectado, favor de verificar su conexión.';
+            }
+            else if (jqXHR.status === 404) {
+                msg = 'Página no encontrada [404]';
+            }
+            else if (jqXHR.status === 500) {
+                msg = 'Error no hay conexión al servidor [500]';
+            }
+            else if (jqXHR.status === 'parseerror') {
+                msg = 'El parseo del JSON es erróneo.';
+            }
+            else if (jqXHR.status === 'timeout') {
+                $('body').addClass('loaded');
+            }
+            else if (jqXHR.status === 'abort') {
+                msg = 'La petición Ajax fue abortada.';
+            }
+            else {
+                msg = 'Error no conocido. ';
+                console.log(exception);
+            }
+            alert(msg);
+        }
+    </script>*@
